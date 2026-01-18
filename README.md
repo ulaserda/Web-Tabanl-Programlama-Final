@@ -20,3 +20,4 @@ Evde ya da iş yerinde nerede olursak olalım istediğimiz yerden sipariş vereb
 Nasıl ve hangi senaryoda kullanılıyor? 
 Küçük ölçekli e-ticaret altyapısı.
 
+Youtube Linki: https://youtu.be/FMc4yT6MWy0
