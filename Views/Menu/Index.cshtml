@@ -1,0 +1,71 @@
+@model IEnumerable<StarbucksWeb.Models.Icecek>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var rol = HttpContextAccessor.HttpContext?.Session?.GetString("Rol");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold" style="color:#1E3932">Starbucks Menü</h2>
+        <p class="text-muted">En taze kahvelerimizi keşfedin</p>
+    </div>
+
+    @if (rol == "Admin")
+    {
+        <div>
+            <a href="/Menu/Ekle" class="btn btn-success" style="background-color: #00704A;">+ Yeni İçecek Ekle</a>
+            <a href="/Account/Logout" class="btn btn-outline-danger ms-2">Güvenli Çıkış</a>
+        </div>
+    }
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>İçecek Adı</th>
+                <th>Boyut</th>
+                <th class="text-end">Fiyat</th>
+                <th class="text-center">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@item.Ad</td>
+                    <td>
+                        <span class="badge rounded-pill bg-light text-dark border">@item.Boyut</span>
+                    </td>
+                    <td class="text-end fw-bold">@item.Fiyat.ToString("C2")</td>
+                    <td class="text-center">
+                        @if (rol == "Admin")
+                        {
+                            <div class="btn-group">
+                                <a href="/Menu/Edit/@item.Id" class="btn btn-sm btn-outline-warning">Düzenle</a>
+                                <a href="/Menu/Sil/@item.Id" class="btn btn-sm btn-outline-danger" onclick="return confirm('Siliyorsun, emin misin?')">Sil</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a href="/Cart/Ekle/@item.Id?returnUrl=Menu&cat=@Context.Request.Query["cat"]" 
+   class="btn btn-success btn-sm px-4" 
+   style="border-radius: 20px; background-color: #00704A; border: none;">
+    🛒 Sepete Ekle
+</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center">
+        Henüz menüde içecek bulunmuyor.
+    </div>
+}

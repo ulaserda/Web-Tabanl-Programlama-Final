@@ -1,0 +1,29 @@
+@{
+    Layout = "_Layout";
+}
+
+<div class="container text-center py-5">
+    <div class="mb-4">
+        <div class="display-1 text-success animate__animated animate__bounceIn">
+            <span style="font-size: 100px;">✔</span>
+        </div>
+    </div>
+    
+    <h1 class="fw-bold" style="color: #1E3932;">Siparişiniz Alındı!</h1>
+    <p class="lead text-muted">Kahveniz uzman baristalarımız tarafından hazırlanmaya başladı.</p>
+    
+    <div class="card shadow-sm mx-auto mt-4" style="max-width: 500px; border-radius: 15px;">
+        <div class="card-body p-4">
+            <h5 class="fw-bold">Tahmini Hazırlanma Süresi</h5>
+            <div class="display-6 text-success fw-bold">4-6 Dakika</div>
+            <hr>
+            <p class="small text-muted mb-0">Sipariş No: #@Random.Shared.Next(1000, 9999)</p>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="/Menu" class="btn btn-success btn-lg px-5 shadow-sm" style="background-color: #00704A; border-radius: 30px;">
+            Yeni Bir Kahve Keşfet
+        </a>
+    </div>
+</div>

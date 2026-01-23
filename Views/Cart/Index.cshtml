@@ -1,0 +1,74 @@
+@model List<StarbucksWeb.Models.CartItem>
+
+<div class="card shadow-sm p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" style="color:#1E3932">🛒 Alışveriş Sepetim</h2>
+        <span class="badge bg-success px-3 py-2">@Model.Sum(x => x.Adet) Ürün</span>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center py-5">
+            <div class="display-1 text-muted mb-4">🛒</div>
+            <h4 class="text-muted">Sepetin şu an boş kanka.</h4>
+            <p>Hemen menüye göz at ve favori kahveni seç!</p>
+            <a href="/Menu" class="btn btn-success btn-lg mt-3" style="background-color: #00704A; border-radius: 25px;">Menüye Dön</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 40%">Ürün Adı</th>
+                        <th class="text-center" style="width: 20%">Adet</th>
+                        <th class="text-end">Birim Fiyat</th>
+                        <th class="text-end">Toplam</th>
+                        <th class="text-center">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-bold">@item.Ad</div>
+                                <small class="text-muted">Klasik Starbucks Lezzeti</small>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group border rounded-pill overflow-hidden">
+                                    <a href="/Cart/Azalt/@item.IcecekId" class="btn btn-sm btn-light px-3 fw-bold">-</a>
+                                    <span class="px-3 py-1 bg-white fw-bold">@item.Adet</span>
+                                    <a href="/Cart/Ekle/@item.IcecekId?returnUrl=Cart" class="btn btn-sm btn-light px-3 fw-bold">+</a>
+                                </div>
+                            </td>
+                            <td class="text-end">@item.Fiyat.ToString("C2")</td>
+                            <td class="text-end fw-bold text-success">@((item.Fiyat * item.Adet).ToString("C2"))</td>
+                            <td class="text-center">
+                                <a href="/Cart/Sil/@item.IcecekId" class="btn btn-sm btn-link text-danger text-decoration-none" onclick="return confirm('Bu ürünü sepetten çıkarmak istiyor musun?')">
+                                    <i class="bi bi-trash"></i> Kaldır
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-5 pt-3 border-top align-items-center">
+            <div class="col-md-6">
+                <a href="/Menu" class="btn btn-outline-secondary rounded-pill px-4">← Alışverişe Devam Et</a>
+                <a href="/Cart/Temizle" class="btn btn-link text-muted ms-3 text-decoration-none">Sepeti Boşalt</a>
+            </div>
+            <div class="col-md-6 text-end">
+                <p class="text-muted mb-1">Ödenecek Toplam Tutar</p>
+                <h2 class="fw-bold" style="color: #00704A;">@Model.Sum(x => x.Fiyat * x.Adet).ToString("C2")</h2>
+                <a href="/Siparis/Odeme" class="btn btn-success btn-sm btn-lg px-5 shadow rounded-pill mt-3" 
+   style="background-color: #00704A; display: inline-block; line-height: 2.5;">
+    Siparişi Tamamla <i class="bi bi-credit-card"></i>
+</a>
+            </div>
+        </div>
+    }
+</div>

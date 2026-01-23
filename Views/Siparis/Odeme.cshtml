@@ -1,0 +1,35 @@
+@model StarbucksWeb.Models.Siparis
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Adres ve İletişim</h3>
+            <div class="mb-3">
+                <label>Ad Soyad</label>
+                <input type="text" name="AdSoyad" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label>Teslimat Adresi</label>
+                <textarea name="Adres" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6" style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+            <h3>Kart Bilgileri</h3>
+            <div class="mb-3">
+                <label>Kart Numarası</label>
+                <input type="text" name="KartNo" class="form-control" placeholder="0000 0000 0000 0000" />
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label>SKT</label>
+                    <input type="text" name="SKT" class="form-control" placeholder="AA/YY" />
+                </div>
+                <div class="col-6">
+                    <label>CVV</label>
+                    <input type="text" name="CVV" class="form-control" placeholder="123" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100 mt-4">Ödemeyi Tamamla ve Sipariş Ver</button>
+        </div>
+    </div>
+</div>

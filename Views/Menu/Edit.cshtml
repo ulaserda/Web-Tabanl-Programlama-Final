@@ -1,0 +1,31 @@
+@model StarbucksWeb.Models.Icecek
+
+<div class="container">
+    <h2>İçeceği Düzenle: @Model.Ad</h2>
+    <hr />
+    <form action="/Menu/Edit" method="post">
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <div class="mb-3">
+            <label class="form-label">İçecek Adı</label>
+            <input type="text" name="Ad" class="form-control" value="@Model.Ad" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Boyut</label>
+            <select name="Boyut" class="form-select">
+                <option value="Tall" selected="@(Model.Boyut == "Tall")">Tall</option>
+                <option value="Grande" selected="@(Model.Boyut == "Grande")">Grande</option>
+                <option value="Venti" selected="@(Model.Boyut == "Venti")">Venti</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fiyat (₺)</label>
+            <input type="number" name="Fiyat" class="form-control" step="0.01" value="@Model.Fiyat.ToString().Replace(",",".")" required>
+        </div>
+
+        <button type="submit" class="btn btn-warning">Güncelle</button>
+        <a href="/Menu/Index" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

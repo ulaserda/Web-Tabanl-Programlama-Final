@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Text.Json
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    // Sepette kaç ürün olduğunu hesaplayan kısım
+    var sepetJson = HttpContextAccessor.HttpContext?.Session?.GetString("Sepet");
+    var sepetSayisi = 0;
+    if (!string.IsNullOrEmpty(sepetJson))
+    {
+        var sepet = JsonSerializer.Deserialize<List<StarbucksWeb.Models.CartItem>>(sepetJson);
+        sepetSayisi = sepet?.Sum(x => x.Adet) ?? 0;
+    }
+
+    var rol = HttpContextAccessor.HttpContext?.Session?.GetString("Rol");
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Starbucks Coffee</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        :root { --sb-green: #00704A; --sb-dark: #1E3932; }
+        body { background-color: #f4f4f2; overflow-x: hidden; }
+        .navbar { background-color: var(--sb-green) !important; z-index: 1050; }
+        
+        /* Slider Sidebar */
+        .sidebar {
+            height: 100vh; width: 60px; position: fixed; top: 56px; left: 0;
+            background: white; border-right: 1px solid #ddd;
+            transition: width 0.3s ease; overflow: hidden; z-index: 1000; white-space: nowrap;
+        }
+        .sidebar:hover { width: 220px; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
+        .sidebar a {
+            padding: 15px 20px; text-decoration: none; color: var(--sb-dark);
+            display: flex; align-items: center; font-weight: 500;
+        }
+        .sidebar a:hover { background-color: #f0f0f0; color: var(--sb-green); }
+        .sidebar-icon { min-width: 30px; font-size: 20px; margin-right: 15px; }
+
+        .main-content { margin-left: 60px; padding: 30px; transition: margin-left 0.3s ease; }
+        .badge-cart { background-color: #d4e9e2; color: var(--sb-green); font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark shadow">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand fw-bold" href="/">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/d/d3/Starbucks_Corporation_Logo_2011.svg" width="35" height="35" class="me-2">
+                    Starbucks
+                </a>
+                <div class="navbar-nav ms-auto align-items-center">
+                    <a class="nav-link text-white me-3" href="/Cart">
+                        🛒 Sepetim <span class="badge badge-cart">@sepetSayisi</span>
+                    </a>
+                    @if (rol == "Admin")
+                    {
+                        <span class="text-white me-2">| Hoş geldin, Admin</span>
+                        <a class="btn btn-sm btn-outline-light" href="/Account/Logout">Çıkış</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link text-white fw-bold" href="/Account/Login">👤 Admin Girişi</a>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="sidebar">
+        <a href="/Menu?cat=Kahve"><span class="sidebar-icon">☕</span> <span>Kahveler</span></a>
+        <a href="/Menu?cat=Cay"><span class="sidebar-icon">🍵</span> <span>Çaylar</span></a>
+        <a href="/Menu?cat=Frappuccino"><span class="sidebar-icon">🧊</span> <span>Frappuccino</span></a>
+        <a href="/Menu?cat=Yiyecek"><span class="sidebar-icon">🥐</span> <span>Yiyecekler</span></a>
+        <hr>
+        <a href="/Menu"><span class="sidebar-icon">📋</span> <span>Tüm Menü</span></a>
+    </div>
+
+    <div class="main-content">
+        <div class="container bg-white shadow-sm p-4 rounded-3" style="min-height: 80vh;">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
